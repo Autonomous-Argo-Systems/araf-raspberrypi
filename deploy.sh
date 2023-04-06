@@ -1,6 +1,9 @@
 #!/bin/bash
 echo "ARAF Deployment Script"
+
+# copying files
 echo "Starting clone..."
+rsync ./ araf@araf.local:/home/araf/araf-raspberrypi -r -v --delete --chown=araf:araf --progress --exclude=.git --delete-excluded
 
 # compilation of the code
 echo "Starting compilation.."
