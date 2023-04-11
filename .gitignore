@@ -1,2 +1,11 @@
 # deleting build and devel
 /build
+devel/local_setup.sh
+devel/.rosinstall
+devel/.catkin
+devel/_setup_util.py
+devel/local_setup.sh
+devel/setup.sh
+devel/share/mavmapper/cmake/mavmapperConfig.cmake
+devel/lib/pkgconfig/mavmapper.pc
+devel/lib/mavmapper/mavmapper_node
