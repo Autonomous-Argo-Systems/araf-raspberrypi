@@ -9,8 +9,7 @@
                 "/opt/ros/noetic/include/**",
                 "/home/luuk/araf-raspberrypi/src/mavmapper/include/**",
                 "/usr/include/**",
-                "${workspaceFolder}/devel/include",
-                "${workspaceFolder}/devel/include"
+                "/home/luuk/ds4_driver/devel/include/**"
             ],
             "name": "ROS",
             "intelliSenseMode": "gcc-x64",

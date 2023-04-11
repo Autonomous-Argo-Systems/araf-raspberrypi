@@ -13,7 +13,7 @@ cd /home/araf/araf-raspberrypi
 
 # launch of the code
 echo "Starting launch.."
-rosnode kill --all
+rosnode list | grep -v rosout | xargs rosnode kill
 roslaunch robotcontrol araf.launch
 
 # succesfully flashed (-;
