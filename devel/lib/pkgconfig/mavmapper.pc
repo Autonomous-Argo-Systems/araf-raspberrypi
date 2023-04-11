@@ -1,4 +1,4 @@
-prefix=/home/jesse/araf-raspberrypi/devel
+prefix=/home/luuk/araf-raspberrypi/devel
 
 Name: mavmapper
 Description: Description of mavmapper
