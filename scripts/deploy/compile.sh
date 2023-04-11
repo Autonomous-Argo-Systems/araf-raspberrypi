@@ -5,6 +5,7 @@ echo "Starting compilation.."
 
 source /opt/ros/noetic/setup.bash
 source /home/araf/araf-raspberrypi/devel/setup.bash
+source /home/araf/ds4_driver/devel/setup.bash
 
 cd /home/araf/araf-raspberrypi 
 
@@ -12,7 +13,8 @@ cd /home/araf/araf-raspberrypi
 
 # launch of the code
 echo "Starting launch.."
-# TODO roslaunch
+rosnode kill --all
+roslaunch robotcontrol araf.launch
 
 # succesfully flashed (-;
 echo "Succesfully deployed!"

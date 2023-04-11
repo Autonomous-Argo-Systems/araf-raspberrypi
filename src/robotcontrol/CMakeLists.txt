@@ -12,11 +12,11 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   geometry_msgs
   sensor_msgs
+  roslaunch
+  ds4_driver
 )
 
 ## System dependencies are found with CMake's conventions
-# find_package(Boost REQUIRED COMPONENTS system)
-
 
 ## Uncomment this if the package has a setup.py. This macro ensures
 ## modules and global scripts declared therein get installed
@@ -121,6 +121,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
+
+
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
 #   src/${PROJECT_NAME}/drivecontroller.cpp
@@ -205,3 +207,4 @@ target_link_libraries(${PROJECT_NAME}_node
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+roslaunch_add_file_check(launch USE_TEST_DEPENDENCIES)

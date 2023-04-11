@@ -1,16 +1,41 @@
 #!/bin/bash
-cd
-git clone https://github.com/naoki-mizuno/ds4drv --branch devel
-cd ds4drv
-mkdir -p ~/.local/lib/python3.8/site-packages
-python3 setup.py install --prefix ~/.local
 
-# Note: udev directory is in the ds4drv repo, not ds4_driver (this repo)
-sudo cp udev/50-ds4drv.rules /etc/udev/rules.d/
-sudo udevadm control --reload-rules
-sudo udevadm trigger
+# setting up ds4drv
+echo "Setting up enviroment..."
+sudo apt install python3
+sudo apt install python3-pip
+pip install ds4drv
 
-cd 
-cd araf-raspberrypi/src/ds4_driver
+# creating workspace
+cd ..
+echo "Setting up workspace..."
+mkdir ds4_driver
+cd ds4_driver
+mkdir src
+catkin_make
+echo 'source '$PWD'/devel/setup.bash'>> ~/.bashrc
+
+
+# downloading driver 
+cd src
+git clone "https://github.com/naoki-mizuno/ds4_driver.git"
+cd ds4_driver
 git checkout noetic-devel
+cd ../..
+
+# building driver
+echo "Building driver"
+catkin_make
+
+# echo done
+echo "Setup process is done!"
+source ~/.bashrc
+
+
+
+
+
+
+
+
 
