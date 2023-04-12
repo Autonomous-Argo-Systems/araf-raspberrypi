@@ -28,9 +28,9 @@ void on_controller(const ds4_driver::Status& msg){
      } else if(msg.axis_left_x < -0.9) {
          set_drive(0, -2);
      } else if(msg.axis_left_y > 0.9) {
-        set_drive(2, 0);
+        set_drive(1, 0);
      } else if(msg.axis_left_y < -0.9) {
-        set_drive(-2, 0);
+        set_drive(-1, 0);
      }else {
         set_drive(0, 0);
      }
