@@ -2,8 +2,8 @@
 
 # setting up ds4drv
 echo "Setting up enviroment..."
-sudo apt install python3
-sudo apt install python3-pip
+sudo apt install python3 -y
+sudo apt install python3-pip -y
 pip install ds4drv
 
 # creating workspace
@@ -29,8 +29,7 @@ catkin_make
 
 # echo done
 echo "Setup process is done!"
-source ~/.bashrc
-
+echo "Please source ~/.bashrc"
 
 
 
