@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<launch>
+    <arg name="addr" default="" />
+	<arg name="use_standard_msgs" default="true" />
+	<arg name="autorepeat_rate" default="0" if="$(arg use_standard_msgs)" />
+
+
+	<node pkg="ds4_driver" type="ds4_driver_node.py" name="ds4_driver" />
+	<node pkg="robotcontrol" type="robotcontrol_node" name="robotcontrol"/>
+	<node name="Drive" pkg="rosserial_python" type="serial_node.py">
+		<param name="port" type="string" value="/dev/ttyUSB0"/>
+		<param name="baud" type="int" value="57600"/>
+	</node>
+</launch>
