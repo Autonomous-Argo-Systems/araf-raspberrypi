@@ -3,11 +3,13 @@
 #include <ros/publisher.h>
 #include <ds4_driver/Status.h>
 #include <geometry_msgs/Twist.h>
+#include <time.h>
 
 ros::Publisher drive_publisher;
 
 int previous_linear;
 int previous_rotation;
+int previous_time;
 
 void set_drive(int forward, int rotate){
     if (forward != previous_linear || rotate != previous_rotation){
@@ -22,6 +24,7 @@ void set_drive(int forward, int rotate){
 }
 
 void on_controller(const ds4_driver::Status& msg){
+    previous_time = time(NULL);
     //  ROS_INFO("Published x: %f, y: %f", msg.axis_left_x, msg.axis_left_y);
      if (msg.axis_left_x > 0.9){
         set_drive(0, 2);
@@ -48,6 +51,9 @@ int main(int argc, char **argv){
     ROS_INFO("Node is now ready for driving");
     ros::Rate loop_rate(1000);
     while (ros::ok()) {
+        if (time(NULL) - previous_time > 2) {
+            set_drive(0, 0);
+        }
         ros::spinOnce();
         loop_rate.sleep();
     }
