@@ -13,8 +13,9 @@ cd /home/araf/araf-raspberrypi
 # launch of the code
 echo "Starting launch.."
 rosnode list | grep -v rosout | xargs rosnode kill
-echo araf | sudo -S systemctl stop my_robot_ros.service
-echo araf | sudo -S systemctl start my_robot_ros.service
+source /home/araf/araf-raspberrypi/devel/setup.bash
+nohup roslaunch robotcontrol araf.launch </dev/null &>/dev/null&
+jobs
 
 # succesfully flashed (-;
 echo "Succesfully deployed!"
