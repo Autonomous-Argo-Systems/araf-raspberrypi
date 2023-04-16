@@ -6,6 +6,10 @@ sudo apt install python3 -y
 sudo apt install python3-pip -y
 pip install ds4drv
 
+# Installing rosserial-python
+echo "Setting up rosserial-python..."
+sudo apt-get install ros-noetic-rosserial-python
+
 # creating workspace
 cd ..
 echo "Setting up workspace..."
