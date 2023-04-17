@@ -26,7 +26,7 @@ cd src
 git clone "https://github.com/naoki-mizuno/ds4_driver.git"
 cd ds4_driver
 git checkout noetic-devel
-cd ..
+cd ../..
 
 # building driver
 echo "Building driver"
