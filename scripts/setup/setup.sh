@@ -10,8 +10,7 @@ pip install pynmea2
 # Installing rosserial-python
 echo "Setting up rosserial-python..."
 sudo apt install ros-noetic-rosserial ros-noetic-mavros ros-noetic-mavros-extras ros-noetic-mavros-msgs -y
-wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
-sudo bash ./install_geographiclib_datasets.sh 
+curl https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh | sudo bash
 
 # creating workspace
 cd ..
