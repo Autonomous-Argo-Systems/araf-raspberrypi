@@ -2,8 +2,11 @@
 #include <ros/subscriber.h>
 #include <ros/publisher.h>
 #include <ds4_driver/Status.h>
+#include <mavros_msgs/RCOut.h>
 #include <geometry_msgs/Twist.h>
 #include <time.h>
+
+#define RC_DRIVE_THRESHOLD 0.5
 
 ros::Publisher drive_publisher;
 
@@ -39,6 +42,21 @@ void on_controller(const ds4_driver::Status& msg){
      }
 }
 
+void on_rcout(const geometry_msgs::Twist::ConstPtr& msg){
+    previous_time = time(NULL);
+    if (msg->linear.x > RC_DRIVE_THRESHOLD && msg->linear.y > RC_DRIVE_THRESHOLD){
+        set_drive(0, 2);
+    } else if(msg->linear.x < -RC_DRIVE_THRESHOLD && msg->linear.y < -RC_DRIVE_THRESHOLD) {
+        set_drive(0, -2);
+    } else if(msg->linear.x > RC_DRIVE_THRESHOLD && msg->linear.y < -RC_DRIVE_THRESHOLD) {
+        set_drive(1, 0);
+    } else if(msg->linear.x < -RC_DRIVE_THRESHOLD && msg->linear.y > RC_DRIVE_THRESHOLD) {
+        set_drive(-1, 0);
+    } else {
+        set_drive(0, 0);
+    }
+}
+
 int main(int argc, char **argv){
     // bootup of the node
     ros::init(argc, argv, "robotcontrol");
@@ -47,6 +65,7 @@ int main(int argc, char **argv){
     // Subscribing and advertising
     drive_publisher = node_handler.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
     ros::Subscriber controller_subcriber = node_handler.subscribe("status", 1000, on_controller);
+    ros::Subscriber drive_sub = node_handler.subscribe("drive_vel", 1000, on_rcout);
 
     ROS_INFO("Node is now ready for driving");
     ros::Rate loop_rate(1000);
