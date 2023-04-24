@@ -4,9 +4,10 @@ import pynmea2
 import rospy
 from std_msgs.msg import String
 from geometry_msgs.msg import Vector3
+from geographic_msgs.msg import GeoPoseStamped
 
 def start():
-    pub = rospy.Publisher('location', Vector3, queue_size=10)
+    pub = rospy.Publisher('location', GeoPoseStamped, queue_size=10)
     rospy.init_node('gps_node', anonymous=True)
     rate = rospy.Rate(10) # 10hz
     locationFound = False
@@ -38,17 +39,17 @@ def start():
                 except:
                     locationFound = False
             else:
-                rospy.loginfo("no fix")
                 locationFound = False
+
         if(locationFound):
             # Extract the latitude and longitude from the parsed message
-            latitude = msg.latitude
-            longitude = msg.longitude
-            altitude = msg.altitude
+            message = GeoPoseStamped()
+            message.pose.position.latitude = msg.latitude
+            message.pose.position.longitude = msg.longitude
+            message.pose.position.altitude = msg.altitude
 
             # Publish the latitude and longitude and sleep till next tick
-            locationstring="lat: " + str(latitude) + " lon: " + str(longitude)
-            rospy.loginfo(locationstring)
+            pub.publish(message)
         else:
             rospy.loginfo("no pos")
             
