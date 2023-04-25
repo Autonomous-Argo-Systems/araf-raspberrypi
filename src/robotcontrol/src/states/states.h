@@ -3,7 +3,9 @@
 
 #include "state.h"
 #include "manualControlState.cpp"
+#include "autonomousControlState.cpp"
 
 static ManualControlState* manualControlState = new ManualControlState();
+static AutonomousControlState* autonomousControlState = new AutonomousControlState();
 
 #endif
