@@ -5,6 +5,7 @@
 #include <ros/subscriber.h>
 #include <ros/publisher.h>
 #include <ds4_driver/Status.h>
+#include <ds4_driver/Feedback.h>
 
 class State;
 
@@ -13,6 +14,7 @@ class RobotController
   
 public:
     ros::Publisher drive_publisher;
+    ros::Publisher ds4_publisher;
     State* currentState = nullptr;
 
     void init();
