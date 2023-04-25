@@ -7,8 +7,8 @@
 class State
 {
 public:
-    virtual void onEnter() = 0;
-    virtual void onExit() = 0;
+    virtual void onEnter(RobotController* controller) = 0;
+    virtual void onExit(RobotController* controller) = 0;
     virtual void update(RobotController* controller) = 0;
     virtual void onControllerData(const ds4_driver::Status& msg, RobotController* controller) = 0;
 };

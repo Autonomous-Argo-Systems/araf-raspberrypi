@@ -34,7 +34,7 @@ void RobotController::switchState(State* newState)
     last_state_switch_time = now;
 
     ROS_INFO("Switching to new state");
-    currentState->onExit();
+    currentState->onExit(this);
     currentState = newState;
-    currentState->onEnter();
+    currentState->onEnter(this);
 }

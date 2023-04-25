@@ -6,8 +6,8 @@
 class AutonomousControlState : public State
 {
 public:
-    void onEnter();
-    void onExit();
+    void onEnter(RobotController* controller);
+    void onExit(RobotController* controller);
     void update(RobotController* controller);
     void onControllerData(const ds4_driver::Status& msg, RobotController* controller);
 };

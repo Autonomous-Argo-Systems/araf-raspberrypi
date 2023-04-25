@@ -5,8 +5,8 @@
 
 void AutonomousControlState::update(RobotController* controller){}
 
-void AutonomousControlState::onEnter(){ROS_INFO("Autonomous onEnter called");}
-void AutonomousControlState::onExit(){}
+void AutonomousControlState::onEnter(RobotController* controller){ROS_INFO("Autonomous onEnter called");}
+void AutonomousControlState::onExit(RobotController* controller){}
 
 void AutonomousControlState::onControllerData(const ds4_driver::Status& msg, RobotController* controller)
 {
