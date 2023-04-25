@@ -5,7 +5,7 @@ class ManualControlState : public State
 {
     int previous_linear;
     int previous_rotation;
-    int previous_time;
+    int last_controller_time;
 
     void set_drive(int forward, int rotate, RobotController* controller){
         if (forward != previous_linear || rotate != previous_rotation){
@@ -20,13 +20,20 @@ class ManualControlState : public State
         }
     }
 
-    void update(RobotController* controller){}
+    void update(RobotController* controller)
+    {
+        if (time(NULL) - last_controller_time > 2) {
+            set_drive(0, 0, controller);
+        }
+    }
 
     void onEnter(){}
     void onExit(){}
 
     void onControllerData(const ds4_driver::Status& msg, RobotController* controller)
     {
+        last_controller_time = time(NULL);
+
         if (msg.axis_left_x > 0.9){
             set_drive(0, 2, controller);
         } else if(msg.axis_left_x < -0.9) {

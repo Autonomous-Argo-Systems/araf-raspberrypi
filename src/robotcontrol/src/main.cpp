@@ -24,9 +24,6 @@ int main(int argc, char **argv){
     ROS_INFO("Node is now ready for driving");
     ros::Rate loop_rate(1000);
     while (ros::ok()) {
-        // if (time(NULL) - previous_time > 2) {
-        //     set_drive(0, 0);
-        // }
         robotController.handle();
 
         ros::spinOnce();
