@@ -14,6 +14,9 @@ int previous_linear;
 int previous_rotation;
 int previous_time;
 
+/**
+ * set_drive publishes new drive instructions
+ **/
 void set_drive(int forward, int rotate){
     if (forward != previous_linear || rotate != previous_rotation){
         auto outmsg = geometry_msgs::Twist();
@@ -26,24 +29,33 @@ void set_drive(int forward, int rotate){
     }
 }
 
+/**
+ * on_controller is the callback function triggered by the status event
+ * This function handles reading the status message and setting the new drive speed
+ **/
 void on_controller(const ds4_driver::Status& msg){
     previous_time = time(NULL);
-    //  ROS_INFO("Published x: %f, y: %f", msg.axis_left_x, msg.axis_left_y);
-     if (msg.axis_left_x > 0.9){
+    // ROS_INFO("Published x: %f, y: %f", msg.axis_left_x, msg.axis_left_y);
+    if (msg.axis_left_x > 0.9){
         set_drive(0, 2);
-     } else if(msg.axis_left_x < -0.9) {
-         set_drive(0, -2);
-     } else if(msg.axis_left_y > 0.9) {
+    } else if(msg.axis_left_x < -0.9) {
+        set_drive(0, -2);
+    } else if(msg.axis_left_y > 0.9) {
         set_drive(1, 0);
-     } else if(msg.axis_left_y < -0.9) {
+    } else if(msg.axis_left_y < -0.9) {
         set_drive(-1, 0);
-     }else {
+    } else {
         set_drive(0, 0);
-     }
+    }
 }
 
+/**
+ * on_rcout is the callback function triggered by the drive_vel event
+ * This function handles reading the Twist message from drive_vel and setting the new drive speed
+ **/
 void on_rcout(const geometry_msgs::Twist::ConstPtr& msg){
     previous_time = time(NULL);
+    // ROS_INFO("Published left: %f, right: %f", msg->linear.x, msg->linear.y);
     if (msg->linear.x > RC_DRIVE_THRESHOLD && msg->linear.y > RC_DRIVE_THRESHOLD){
         set_drive(0, 2);
     } else if(msg->linear.x < -RC_DRIVE_THRESHOLD && msg->linear.y < -RC_DRIVE_THRESHOLD) {
@@ -70,6 +82,7 @@ int main(int argc, char **argv){
     ROS_INFO("Node is now ready for driving");
     ros::Rate loop_rate(1000);
     while (ros::ok()) {
+        // Lost signal timeout
         if (time(NULL) - previous_time > 2) {
             set_drive(0, 0);
         }

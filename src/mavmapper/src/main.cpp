@@ -11,10 +11,18 @@ ros::ServiceClient setmode_ser;
 ros::Publisher drive_pub;
 
 mavros_msgs::State current_state;
+/**
+ * state_cb is the callback function triggered by the mavros/state event
+ * This function handles reading and storing the State message from mavros/state
+ **/
 void state_cb(const mavros_msgs::State::ConstPtr& msg){
     current_state = *msg;
 }
 
+/**
+ * rcout_cb is the callback function triggered by the mavros/rc/out event
+ * This function handles reading the RCOut message from mavros/rc/out and publishing new drive_vel Twist message
+ **/
 void rcout_cb(const mavros_msgs::RCOut::ConstPtr& msg) {
     geometry_msgs::Twist tw;
     tw.linear.x = ((double)(msg->channels[0]-RCAVG))/RCVAR;
@@ -23,6 +31,9 @@ void rcout_cb(const mavros_msgs::RCOut::ConstPtr& msg) {
     drive_pub.publish(tw);
 }
 
+/**
+ * setNewMode attempts to set the new mode in ardurover (ardupilot)
+ **/
 bool setNewMode(uint8_t mode) {
     mavros_msgs::SetMode newMode;
     newMode.request.base_mode = mode;
