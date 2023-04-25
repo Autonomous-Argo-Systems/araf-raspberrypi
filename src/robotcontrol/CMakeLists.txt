@@ -139,6 +139,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_node src/main.cpp
 src/robotController.cpp
 src/states/manualControlState.cpp
+src/states/autonomousControlState.cpp
 src/states/state.h
 src/states/states.h
 )
