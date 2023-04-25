@@ -138,8 +138,12 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 add_executable(${PROJECT_NAME}_node src/main.cpp
 src/robotController.cpp
+src/states/headers/manualControlState.h
 src/states/manualControlState.cpp
+
+src/states/headers/autonomousControlState.h
 src/states/autonomousControlState.cpp
+
 src/states/state.h
 src/states/states.h
 )

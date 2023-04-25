@@ -2,8 +2,8 @@
 #define STATES_H
 
 #include "state.h"
-#include "manualControlState.cpp"
-#include "autonomousControlState.cpp"
+#include "headers/manualControlState.h"
+#include "headers/autonomousControlState.h"
 
 static ManualControlState* manualControlState = new ManualControlState();
 static AutonomousControlState* autonomousControlState = new AutonomousControlState();

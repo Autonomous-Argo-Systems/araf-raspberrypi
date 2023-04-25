@@ -1,12 +1,10 @@
-#include "state.h"
+#include "headers/autonomousControlState.h"
 #include <geometry_msgs/Twist.h>
 
-class AutonomousControlState : public State
-{
-    void update(RobotController* controller){}
 
-    void onEnter(){}
-    void onExit(){}
+void AutonomousControlState::update(RobotController* controller){}
 
-    void onControllerData(const ds4_driver::Status& msg, RobotController* controller){}
-};
+void AutonomousControlState::onEnter(){}
+void AutonomousControlState::onExit(){}
+
+void AutonomousControlState::onControllerData(const ds4_driver::Status& msg, RobotController* controller){}
