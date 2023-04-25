@@ -39,5 +39,6 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
     else if(msg.axis_left_y > 0.9) set_drive(1, 0, controller);
     else if(msg.axis_left_y < -0.9) set_drive(-1, 0, controller);
     else set_drive(0, 0, controller);
-        
+
+    if(msg.button_r1) controller->switchState(autonomousControlState);    
 }

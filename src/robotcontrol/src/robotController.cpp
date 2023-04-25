@@ -25,6 +25,7 @@ void RobotController::handle()
 
 void RobotController::switchState(State* newState)
 {
+    ROS_INFO("Switching to new state");
     currentState->onExit();
     currentState = newState;
     currentState->onEnter();

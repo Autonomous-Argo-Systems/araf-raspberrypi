@@ -7,4 +7,7 @@ void AutonomousControlState::update(RobotController* controller){}
 void AutonomousControlState::onEnter(){}
 void AutonomousControlState::onExit(){}
 
-void AutonomousControlState::onControllerData(const ds4_driver::Status& msg, RobotController* controller){}
+void AutonomousControlState::onControllerData(const ds4_driver::Status& msg, RobotController* controller)
+{
+    if(msg.button_r1) controller->switchState(manualControlState);
+}
