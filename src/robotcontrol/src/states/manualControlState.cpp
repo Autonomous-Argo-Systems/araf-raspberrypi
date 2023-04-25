@@ -29,7 +29,13 @@ void ManualControlState::update(RobotController* controller)
 
 void ManualControlState::onEnter(RobotController* controller)
 {
+    auto msg = ds4_driver::Feedback();
+    msg.set_led = true;
+    msg.led_r = 0;
+    msg.led_g = 0;
+    msg.led_b = 255;
 
+    controller->ds4_publisher.publish(msg);
 }
 
 void ManualControlState::onExit(RobotController* controller)

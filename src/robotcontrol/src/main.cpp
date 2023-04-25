@@ -19,7 +19,7 @@ int main(int argc, char **argv){
 
     // Subscribing and advertising
     robotController.drive_publisher = node_handler.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
-    //robotController.ds4_publisher = node_handler.advertise<ds4_driver::Feedback>("feedback", 1000);
+    robotController.ds4_publisher = node_handler.advertise<ds4_driver::Feedback>("set_feedback", 1000);
     ros::Subscriber controller_subcriber = node_handler.subscribe("status", 1000, on_controller);
 
     ROS_INFO("Node is now ready for driving");
