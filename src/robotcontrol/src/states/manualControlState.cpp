@@ -34,16 +34,11 @@ class ManualControlState : public State
     {
         last_controller_time = time(NULL);
 
-        if (msg.axis_left_x > 0.9){
-            set_drive(0, 2, controller);
-        } else if(msg.axis_left_x < -0.9) {
-            set_drive(0, -2, controller);
-        } else if(msg.axis_left_y > 0.9) {
-            set_drive(1, 0, controller);
-        } else if(msg.axis_left_y < -0.9) {
-            set_drive(-1, 0, controller);
-        }else {
-            set_drive(0, 0, controller);
-        }
+        if (msg.axis_left_x > 0.9) set_drive(0, 2, controller);
+        else if(msg.axis_left_x < -0.9) set_drive(0, -2, controller);
+        else if(msg.axis_left_y > 0.9) set_drive(1, 0, controller);
+        else if(msg.axis_left_y < -0.9) set_drive(-1, 0, controller);
+        else set_drive(0, 0, controller);
+        
     }
 };
