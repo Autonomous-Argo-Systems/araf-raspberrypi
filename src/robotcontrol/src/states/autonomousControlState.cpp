@@ -1,10 +1,11 @@
 #include "headers/autonomousControlState.h"
 #include <geometry_msgs/Twist.h>
 
+#include "states.h"
 
 void AutonomousControlState::update(RobotController* controller){}
 
-void AutonomousControlState::onEnter(){}
+void AutonomousControlState::onEnter(){ROS_INFO("Autonomous onEnter called");}
 void AutonomousControlState::onExit(){}
 
 void AutonomousControlState::onControllerData(const ds4_driver::Status& msg, RobotController* controller)

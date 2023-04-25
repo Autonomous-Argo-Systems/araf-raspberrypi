@@ -28,7 +28,7 @@ void ManualControlState::update(RobotController* controller)
 }
 
 void ManualControlState::onEnter(){}
-void ManualControlState::onExit(){}
+void ManualControlState::onExit(){ROS_INFO("Manual onExit called");}
 
 void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotController* controller)
 {
