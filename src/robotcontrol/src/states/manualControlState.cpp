@@ -2,6 +2,7 @@
 #include <geometry_msgs/Twist.h>
 
 #include "states.h"
+#include "headers/manualControlState.h"
 
 int previous_linear;
 int previous_rotation;
@@ -53,5 +54,11 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
     else if(msg.axis_left_y < -0.9) set_drive(-1, 0, controller);
     else set_drive(0, 0, controller);
 
-    if(msg.button_r1) controller->switchState(autonomousControlState);    
+    if (msg.button_r1)
+        controller->switchState(autonomousControlState);
+}
+
+void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
+{
+    // DO NOTHING
 }

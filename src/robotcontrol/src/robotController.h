@@ -4,6 +4,7 @@
 #include <ros/ros.h>
 #include <ros/subscriber.h>
 #include <ros/publisher.h>
+#include <geometry_msgs/Twist.h>
 #include <ds4_driver/Status.h>
 #include <ds4_driver/Feedback.h>
 
@@ -20,6 +21,7 @@ public:
     void init();
     void handle();
     void onControllerInput(const ds4_driver::Status& msg);
+    void onRCOut(const geometry_msgs::Twist::ConstPtr& msg);
     void switchState(State* nextState);
 };
 

@@ -9,6 +9,10 @@ void on_controller(const ds4_driver::Status& msg)
     robotController.onControllerInput(msg);
 }
 
+void on_rcout(const geometry_msgs::Twist::ConstPtr& msg) {
+    robotController.onRCOut(msg);
+}
+
 int main(int argc, char **argv){
     // bootup of the node
     ros::init(argc, argv, "robotcontrol");

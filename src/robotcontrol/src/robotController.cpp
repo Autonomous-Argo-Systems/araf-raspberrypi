@@ -10,6 +10,11 @@ void RobotController::onControllerInput(const ds4_driver::Status& msg)
     currentState->onControllerData(msg, this);
 }
 
+void RobotController::onRCOut(const geometry_msgs::Twist::ConstPtr &msg)
+{
+    currentState->onRCOut(msg, this);
+}
+
 void RobotController::init()
 {
     ROS_INFO("Init RoboController called");
