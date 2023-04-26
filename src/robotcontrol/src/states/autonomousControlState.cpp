@@ -2,7 +2,6 @@
 #include <geometry_msgs/Twist.h>
 
 #include "states.h"
-#include "headers/autonomousControlState.h"
 
 #define RC_DRIVE_THRESHOLD 0.5
 

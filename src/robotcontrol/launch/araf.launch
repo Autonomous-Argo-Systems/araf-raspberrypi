@@ -11,4 +11,6 @@
 		<param name="port" type="string" value="/dev/ttyUSB0"/>
 		<param name="baud" type="int" value="57600"/>
 	</node>
+	<node pkg="mavmapper" type="mavmapper_node" name="mavmapper"/>
+	<node pkg="mavros" type="px4.launch" name="mavros"/>
 </launch>

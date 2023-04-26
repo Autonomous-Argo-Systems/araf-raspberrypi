@@ -2,7 +2,6 @@
 #include <geometry_msgs/Twist.h>
 
 #include "states.h"
-#include "headers/manualControlState.h"
 
 int previous_linear;
 int previous_rotation;
