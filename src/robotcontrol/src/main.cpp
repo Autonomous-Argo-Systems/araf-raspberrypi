@@ -1,6 +1,5 @@
 #include <ros/ros.h>
 #include <geometry_msgs/Twist.h>
-
 #include "robotController.h"
 
 RobotController robotController;
@@ -21,6 +20,7 @@ int main(int argc, char **argv){
     robotController.drive_publisher = node_handler.advertise<geometry_msgs::Twist>("cmd_vel", 1000);
     robotController.ds4_publisher = node_handler.advertise<ds4_driver::Feedback>("set_feedback", 1000);
     ros::Subscriber controller_subcriber = node_handler.subscribe("status", 1000, on_controller);
+    ros::Subscriber drive_sub = node_handler.subscribe("drive_vel", 1000, on_rcout);
 
     ROS_INFO("Node is now ready for driving");
     ros::Rate loop_rate(1000);
