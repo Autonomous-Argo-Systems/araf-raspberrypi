@@ -3,27 +3,17 @@
 
 #include "states.h"
 
-int previous_linear;
-int previous_rotation;
+int previous_y;
+int previous_x;
 int last_controller_time;
-
-void ManualControlState::set_drive(int forward, int rotate, RobotController* controller){
-    if (forward != previous_linear || rotate != previous_rotation){
-        ROS_INFO("Set drive forward: %d, rotate: %d", forward, rotate);
-        auto outmsg = geometry_msgs::Twist();
-        outmsg.linear.x = forward;
-        outmsg.angular.z = rotate;
-        controller->drive_publisher.publish(outmsg);
-
-        previous_linear = forward;
-        previous_rotation = rotate;
-    }
-}
 
 void ManualControlState::update(RobotController* controller)
 {
     if (time(NULL) - last_controller_time > 2) {
-        set_drive(0, 0, controller);
+        auto outmsg = geometry_msgs::Twist();
+        outmsg.linear.x = 0;
+        outmsg.linear.y = 0;
+        controller->drive_publisher.publish(outmsg);
     }
 }
 
@@ -47,14 +37,20 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
 {
     last_controller_time = time(NULL);
 
-    if (msg.axis_left_x > 0.9) set_drive(0, 2, controller);
-    else if(msg.axis_left_x < -0.9) set_drive(0, -2, controller);
-    else if(msg.axis_left_y > 0.9) set_drive(1, 0, controller);
-    else if(msg.axis_left_y < -0.9) set_drive(-1, 0, controller);
-    else set_drive(0, 0, controller);
-
     if (msg.button_r1)
         controller->switchState(autonomousControlState);
+
+    if (msg.axis_left_y != previous_y || msg.axis_left_x != previous_x)
+    {
+        ROS_INFO("Set drive forward: %f, rotate: %f", msg.axis_left_y, msg.axis_left_x);
+        auto outmsg = geometry_msgs::Twist();
+        outmsg.linear.x = msg.axis_left_x;
+        outmsg.linear.y = msg.axis_left_y;
+        controller->drive_publisher.publish(outmsg);
+
+        previous_y = msg.axis_left_y;
+        previous_x = msg.axis_left_x;
+    }
 }
 
 void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
