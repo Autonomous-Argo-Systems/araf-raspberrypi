@@ -9,8 +9,12 @@ pip install pynmea2
 
 # Installing rosserial-python
 echo "Setting up rosserial-python..."
-sudo apt install ros-noetic-rosserial ros-noetic-mavros ros-noetic-mavros-extras ros-noetic-mavros-msgs -y
+sudo apt install ros-noetic-rosserial ros-noetic-mavros ros-noetic-mavros-extras ros-noetic-mavros-msgs python3-dev python3-opencv python3-wxgtk4.0 python3-pip python3-matplotlib python3-lxml python3-pygame -y
 curl https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh | sudo bash
+
+# Installing mavproxy
+pip3 install PyYAML mavproxy
+echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
 
 # creating workspace
 cd ..

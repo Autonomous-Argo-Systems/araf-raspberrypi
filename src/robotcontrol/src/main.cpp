@@ -18,7 +18,7 @@ int main(int argc, char **argv){
     ros::init(argc, argv, "robotcontrol");
     ros::NodeHandle node_handler;
 
-    robotController.init();
+    robotController.init(node_handler);
 
     // Subscribing and advertising
     robotController.drive_publisher = node_handler.advertise<geometry_msgs::Twist>("cmd_vel", 1000);

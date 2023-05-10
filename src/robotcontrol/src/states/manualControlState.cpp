@@ -53,8 +53,11 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
     else if(msg.axis_left_y < -0.9) set_drive(-1, 0, controller);
     else set_drive(0, 0, controller);
 
-    if (msg.button_r1)
+    if (msg.button_r1)  {
+        // TODO handle error in setting of mode
+        controller->setPX4Mode(216 /*MAV_MODE_GUIDED_ARMED*/);
         controller->switchState(autonomousControlState);
+    }
 }
 
 void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)

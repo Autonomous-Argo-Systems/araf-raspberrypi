@@ -18,11 +18,13 @@ public:
     ros::Publisher ds4_publisher;
     State* currentState = nullptr;
 
-    void init();
+    void init(ros::NodeHandle node_handler);
     void handle();
     void onControllerInput(const ds4_driver::Status& msg);
     void onRCOut(const geometry_msgs::Twist::ConstPtr& msg);
     void switchState(State* nextState);
+    bool setCommandToPX4(uint16_t cmdint);
+    bool setPX4Mode(uint8_t mode);
 };
 
 #endif
