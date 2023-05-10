@@ -5,8 +5,6 @@
 
 class ManualControlState : public State
 {
-    void set_drive(int forward, int rotate, RobotController* controller);
-
 public:
     void onEnter(RobotController* controller);
     void onExit(RobotController* controller);
