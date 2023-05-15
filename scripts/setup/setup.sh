@@ -20,6 +20,11 @@ mkdir src
 catkin_make
 echo 'source '$PWD'/devel/setup.bash'>> ~/.bashrc
 
+# downloading Lidar (Velodyne) driver
+cd src
+git clone "https://github.com/ros-drivers/velodyne.git"
+cd ..
+rosdep install --from-paths src --ignore-src --rosdistro noetic -y
 
 # downloading driver 
 cd src
