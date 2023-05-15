@@ -37,8 +37,11 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
 {
     last_controller_time = time(NULL);
 
-    if (msg.button_r1)
+    if (msg.button_r1)  {
+        // TODO handle error in setting of mode
+        controller->setPX4Mode(216 /*MAV_MODE_GUIDED_ARMED*/);
         controller->switchState(autonomousControlState);
+    }
 
     int input_left = (int)(msg.axis_left_y * 100.0);
     int input_right = (int)(msg.axis_right_y * 100.0);

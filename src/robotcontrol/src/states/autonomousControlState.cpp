@@ -3,8 +3,6 @@
 
 #include "states.h"
 
-#define RC_DRIVE_THRESHOLD 0.5
-
 void AutonomousControlState::update(RobotController *controller) {}
 
 void AutonomousControlState::onEnter(RobotController *controller)
@@ -24,8 +22,14 @@ void AutonomousControlState::onExit(RobotController *controller) {}
 
 void AutonomousControlState::onControllerData(const ds4_driver::Status &msg, RobotController *controller)
 {
-    if (msg.button_r1)
+    if (msg.button_r1) {
+        // TODO handle error in setting of mode
+        controller->setPX4Mode(192 /*MAV_MODE_MANUAL_ARMED */);
         controller->switchState(manualControlState);
+    }
+    if (msg.button_triangle) {
+        controller->setCommandToPX4(300 /*MISSION_START*/);
+    }
 }
 
 void AutonomousControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
