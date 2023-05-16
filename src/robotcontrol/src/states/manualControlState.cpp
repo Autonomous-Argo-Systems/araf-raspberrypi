@@ -5,16 +5,16 @@
 #include "states.h"
 #include "headers/manualControlState.h"
 
-int previous_y;
-int previous_x;
+int previous_right, previous_left;
 int last_controller_time;
 
 void ManualControlState::update(RobotController* controller)
 {
-    if (time(NULL) - last_controller_time > 2) {
+    if ((time(NULL) - last_controller_time) > 2) {
+        last_controller_time = time(NULL);
         auto outmsg = geometry_msgs::Twist();
-        outmsg.linear.x = 0;
-        outmsg.linear.y = 0;
+        outmsg.linear.x = 0.0;
+        outmsg.linear.y = 0.0;
         controller->drive_publisher.publish(outmsg);
     }
 }
@@ -42,16 +42,19 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
         controller->switchState(autonomousControlState);
     }
 
-    if (msg.axis_left_y != previous_y || msg.axis_left_x != previous_x)
+    int input_left = (int)(msg.axis_left_y * 100.0);
+    int input_right = (int)(msg.axis_right_y * 100.0);
+
+    if (input_right != previous_right || input_left != previous_left)
     {
-        ROS_INFO("Set drive forward: %f, rotate: %f", msg.axis_left_y, msg.axis_left_x);
+        ROS_INFO("Set drive forward: %d, rotate: %d", input_left, previous_right);
         auto outmsg = geometry_msgs::Twist();
-        outmsg.linear.x = msg.axis_left_x;
-        outmsg.linear.y = msg.axis_left_y;
+        outmsg.linear.x = ((double)input_left / 100.0);
+        outmsg.linear.y = ((double)input_right / 100.0);
         controller->drive_publisher.publish(outmsg);
 
-        previous_y = msg.axis_left_y;
-        previous_x = msg.axis_left_x;
+        previous_right = input_right;
+        previous_left = input_left;
     }
 }
 
