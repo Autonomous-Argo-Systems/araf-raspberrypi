@@ -12,7 +12,7 @@
 		<param name="baud" type="int" value="57600"/>
 	</node>
 	<node pkg="mavmapper" type="mavmapper_node" name="mavmapper"/>
-	<node pkg="lidarcontrol" type="robotcontrol_node" name="lidarcontrol"/>
+	<node pkg="lidarcontrol" type="lidarcontrol_node" name="lidarcontrol"/>
 
 	<include file="$(find mavros)/launch/px4.launch"/>
 	<include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
