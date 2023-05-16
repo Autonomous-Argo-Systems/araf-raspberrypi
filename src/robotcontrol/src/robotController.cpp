@@ -19,6 +19,11 @@ void RobotController::onRCOut(const geometry_msgs::Twist::ConstPtr &msg)
     currentState->onRCOut(msg, this);
 }
 
+void RobotController::onPX4State(const mavros_msgs::State::ConstPtr& msg)
+{
+    currentState->onPX4State(msg, this);
+}
+
 void RobotController::init(ros::NodeHandle node_handler)
 {
     ROS_INFO("Init RoboController called");
@@ -67,11 +72,25 @@ bool RobotController::setCommandToPX4(uint16_t cmdint)
 /**
  * setNewMode attempts to set the new mode in ardurover (ardupilot)
  **/
-bool RobotController::setPX4Mode(uint8_t mode) {
+bool RobotController::setPX4Mode(char* mode) {
     mavros_msgs::SetMode newMode;
-    newMode.request.base_mode = mode;
+    newMode.request.custom_mode = mode;
     if (setmode_ser.call(newMode)) {
         return newMode.response.mode_sent;
     }
     return false;
+}
+
+void RobotController::setLedColor(float r, float g, float b, bool blink)
+{
+    auto msg = ds4_driver::Feedback();
+    msg.set_led = true;
+    msg.led_r = r;
+    msg.led_g = g;
+    msg.led_b = b;
+    msg.led_flash_off = 0.25;
+    msg.led_flash_on = 0.25;
+    msg.set_led_flash = blink;
+    
+    this->ds4_publisher.publish(msg);
 }
