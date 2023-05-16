@@ -1,7 +1,9 @@
 #include "headers/manualControlState.h"
 #include <geometry_msgs/Twist.h>
+#include <mavros_msgs/SetMode.h>
 
 #include "states.h"
+#include "headers/manualControlState.h"
 
 int previous_right, previous_left;
 int last_controller_time;
@@ -19,13 +21,11 @@ void ManualControlState::update(RobotController* controller)
 
 void ManualControlState::onEnter(RobotController* controller)
 {
-    auto msg = ds4_driver::Feedback();
-    msg.set_led = true;
-    msg.led_r = 0;
-    msg.led_g = 0;
-    msg.led_b = 255;
-
-    controller->ds4_publisher.publish(msg);
+    controller->setLedColor(0, 0, 255, false);
+    bool stateChangeSent = controller->setPX4Mode("MANUAL");
+    if (!stateChangeSent) {
+        ROS_INFO("Failed sending px4state to manual");
+    }
 }
 
 void ManualControlState::onExit(RobotController* controller)
@@ -38,8 +38,7 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
     last_controller_time = time(NULL);
 
     if (msg.button_r1)  {
-        // TODO handle error in setting of mode
-        controller->setPX4Mode(216 /*MAV_MODE_GUIDED_ARMED*/);
+        ROS_INFO("Switching to auto mode");
         controller->switchState(autonomousControlState);
     }
 
@@ -62,4 +61,15 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
 void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
 {
     // DO NOTHING
+}
+
+void ManualControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg, RobotController *controller)
+{
+    if (msg->mode != "MANUAL") {
+        ROS_INFO("Switching PX4 to manual mode");
+        bool stateChangeSent = controller->setPX4Mode("MANUAL");
+        if (!stateChangeSent) {
+            ROS_INFO("Failed sending state to manual");
+        }
+    }
 }
