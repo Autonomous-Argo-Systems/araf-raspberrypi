@@ -7,6 +7,7 @@
 #include <geometry_msgs/Twist.h>
 #include <ds4_driver/Status.h>
 #include <ds4_driver/Feedback.h>
+#include <mavros_msgs/State.h>
 
 class State;
 
@@ -22,9 +23,11 @@ public:
     void handle();
     void onControllerInput(const ds4_driver::Status& msg);
     void onRCOut(const geometry_msgs::Twist::ConstPtr& msg);
+    void onPX4State(const mavros_msgs::State::ConstPtr& msg);
     void switchState(State* nextState);
     bool setCommandToPX4(uint16_t cmdint);
-    bool setPX4Mode(uint8_t mode);
+    bool setPX4Mode(char* mode);
+    void setLedColor(float r, float g, float b, bool blink);
 };
 
 #endif
