@@ -1,47 +1,16 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
 #include "dataPoint.h"
+#include "headers/BoundingBoxValidator.h"
 
 sensor_msgs::PointCloud2 pointcloud_valid;
 ros::Publisher points_pub;
 
-bool isDataPointValid(DataPoint* point)
-{
-    return point->x < 2 && point->y < 0;
-}
-
 void onLidarData(const sensor_msgs::PointCloud2 pointcloud)
 {
-    // Filter usefull points
-    uint8_t point_data[pointcloud.point_step];
-    pointcloud_valid.data.clear();
-    
-    for(int i = 0; i < pointcloud.row_step; i += pointcloud.point_step)
-    {
-        // Copying to temp buffer
-        for (size_t j = 0; j < pointcloud.point_step; j++)
-            point_data[j] = pointcloud.data[i + j];
-        
-        // Casting pointers
-        DataPoint* datapoint_ptr = (DataPoint*) point_data;
-
-        if (isDataPointValid(datapoint_ptr)){
-            // Copying to result buffer
-            for (size_t j = 0; j < pointcloud.point_step; j++)
-                pointcloud_valid.data.push_back(point_data[j]);
-        }
-    }
-
-    // Setup Validated pointcloud message
-    pointcloud_valid.height = pointcloud.height;
-    pointcloud_valid.fields = pointcloud.fields;
-    pointcloud_valid.is_bigendian = pointcloud.is_bigendian;
-    pointcloud_valid.point_step = pointcloud.point_step;
-    pointcloud_valid.is_dense = pointcloud.is_dense;
-    pointcloud_valid.header.frame_id = pointcloud.header.frame_id;
-
-    pointcloud_valid.row_step = pointcloud_valid.data.size();
-    pointcloud_valid.width = pointcloud_valid.row_step / pointcloud_valid.point_step;
+    // Filter out all points not on route
+    BoundingBoxValidator bbVal;
+    bbVal.validate(pointcloud, pointcloud_valid);;
 
     points_pub.publish(pointcloud_valid);
 }
