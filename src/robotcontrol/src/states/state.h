@@ -12,6 +12,7 @@ public:
     virtual void update(RobotController* controller) = 0;
     virtual void onControllerData(const ds4_driver::Status& msg, RobotController* controller) = 0;
     virtual void onRCOut(const geometry_msgs::Twist::ConstPtr& msg, RobotController* controller) = 0;
+    virtual void onPX4State(const mavros_msgs::State::ConstPtr& msg, RobotController* controller) = 0;
 };
 
 #endif
