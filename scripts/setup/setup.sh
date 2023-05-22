@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# setting up ds4drv
+# setting up dependencies
 echo "Setting up enviroment..."
+sudo apt update
 sudo apt install python3 -y
 sudo apt install python3-pip -y
 pip install ds4drv
@@ -25,14 +26,20 @@ mkdir src
 catkin_make
 echo 'source '$PWD'/devel/setup.bash'>> ~/.bashrc
 
-# downloading ds4_driver 
+# downloading Lidar (Velodyne) driver
+cd src
+git clone "https://github.com/ros-drivers/velodyne.git"
+cd ..
+rosdep install --from-paths src --ignore-src --rosdistro noetic -y
+
+# downloading DS4 (PS4 controller) driver 
 cd src
 git clone "https://github.com/naoki-mizuno/ds4_driver.git"
 cd ds4_driver
 git checkout noetic-devel
 cd ../..
 
-# building driver
+# building drivers
 echo "Building driver"
 catkin_make
 
