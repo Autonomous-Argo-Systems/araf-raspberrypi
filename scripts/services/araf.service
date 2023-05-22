@@ -1,5 +1,5 @@
 [Unit]
-Description=mavproxy
+Description=araf
 After=network.target
 
 [Service]
