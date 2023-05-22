@@ -1,6 +1,15 @@
 #include "headers/boxValidator.h"
 #include <ros/ros.h>
 
+
+// Default settings for the bounding box, value's in m
+float leftOffset = 1.0f;
+float rightOffset = 1.0f;
+float topOffset = 4.0f;
+float bottomOffset = 1.0f;
+float distance = 3.0f;
+float back = 0.0f;
+
 /// @brief The algotithm that determines if the datapoint is usefull for further analyses.
 /// For now this returns a bounding box in front of the lidar. Could be reworkt to use different algorithms based on 
 /// the situation
@@ -8,14 +17,6 @@
 /// @return True if valid point.
 bool BoxValidator::isDataPointValid(DataPoint* point)
 {
-    // Square boundingbox in m
-    const float leftOffset = 1.0f;
-    const float rightOffset = 1.0f;
-    const float topOffset = 4.0f;
-    const float bottomOffset = 1.0f;
-    const float distance = 3.0f;
-    const float back = 0.0f;
-
     return point->x <= distance && point->x >= (back * -1.0f) &&
         point->y <= leftOffset && point->y >= (rightOffset * -1.0f) &&
         point->z <= topOffset && point->z >= (bottomOffset * -1.0f);
@@ -47,7 +48,15 @@ void BoxValidator::Validate(const sensor_msgs::PointCloud2 &pointcloud, sensor_m
     valid_pointcloud.width = valid_pointcloud.row_step / valid_pointcloud.point_step;
 }
 
+
 void BoxValidator::Configure(std::vector<float> configuration)
 {
+    if (configuration.size() != 6) throw std::runtime_error("BoxValidator configuration size was not 6");
 
+    leftOffset = configuration.at(0);
+    rightOffset = configuration.at(1);
+    topOffset = configuration.at(2);
+    bottomOffset = configuration.at(3);
+    distance = configuration.at(4);
+    back = configuration.at(5);
 }
