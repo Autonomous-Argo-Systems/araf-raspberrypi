@@ -1,7 +1,7 @@
 #include <ros/ros.h>
 #include <sensor_msgs/PointCloud2.h>
-#include "dataPoint.h"
-#include "headers/BoundingBoxValidator.h"
+#include "datapoint/dataPoint.h"
+#include "validate/headers/boxValidator.h"
 
 sensor_msgs::PointCloud2 pointcloud_valid;
 ros::Publisher points_pub;
@@ -9,8 +9,8 @@ ros::Publisher points_pub;
 void onLidarData(const sensor_msgs::PointCloud2 pointcloud)
 {
     // Filter out all points not on route
-    BoundingBoxValidator bbVal;
-    bbVal.validate(pointcloud, pointcloud_valid);;
+    BoxValidator bbVal;
+    bbVal.Validate(pointcloud, pointcloud_valid);
 
     points_pub.publish(pointcloud_valid);
 }
