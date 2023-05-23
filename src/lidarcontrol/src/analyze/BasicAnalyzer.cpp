@@ -66,5 +66,16 @@ float BasicAnalyzer::Analyze(sensor_msgs::PointCloud2 &valid_pointcloud)
 
 void BasicAnalyzer::Configure(std::vector<float> configuration)
 {
+    // multipliers
+    linearDistanceWeight = configuration[0];
+    linearIntensityWeight = configuration[1];
+    linearAmountWeight = configuration[2];
 
+    // Exponentials
+    exponentialDistanceWeight = configuration[3];
+    exponentialIntensityWeight = configuration[4]; 
+    exponentialAmountWeight = configuration[5];
+
+    lowerRiskThreshold = configuration[6];
+    upperRiskThreshold = configuration[7];
 }
