@@ -1,0 +1,15 @@
+[Unit]
+Description=araf
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /home/araf/startROS.sh
+Restart=on-failure
+User=araf
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
+
+# Location: /etc/systemd/system/araf.service
