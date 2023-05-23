@@ -16,6 +16,9 @@ public:
     /// Risk float is calculated as precentage based on upper and lower threshold
     /// @param configuration 
     float Analyze(sensor_msgs::PointCloud2 &valid_pointcloud);
+
+    /// @brief Configure the weights for the basic analyzer
+    /// @param configuration 
     void Configure(std::vector<float> configuration);
 private:
     float CalculateDistance(DataPoint* point);
