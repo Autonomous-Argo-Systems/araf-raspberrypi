@@ -137,6 +137,7 @@ include_directories(
 add_executable(${PROJECT_NAME}_node src/main.cpp
 src/datapoint/datapoint.cpp
 src/validate/boxValidator.cpp
+src/analyze/BasicAnalyzer.cpp
 )
 
 ## Rename C++ executable without prefix

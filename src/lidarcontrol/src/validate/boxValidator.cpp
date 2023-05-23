@@ -3,8 +3,8 @@
 
 
 // Default settings for the bounding box, value's in m
-float leftOffset = 1.0f;
-float rightOffset = 1.0f;
+float leftOffset = 0.5f;
+float rightOffset = 0.5f;
 float topOffset = 4.0f;
 float bottomOffset = 1.0f;
 float distance = 3.0f;

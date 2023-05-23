@@ -2,6 +2,7 @@
 #include <sensor_msgs/PointCloud2.h>
 #include "datapoint/dataPoint.h"
 #include "validate/headers/boxValidator.h"
+#include "analyze/headers/basicAnalyser.h"
 
 sensor_msgs::PointCloud2 pointcloud_valid;
 ros::Publisher points_pub;
@@ -11,6 +12,10 @@ void onLidarData(const sensor_msgs::PointCloud2 pointcloud)
     // Filter out all points not on route
     BoxValidator bbVal;
     bbVal.Validate(pointcloud, pointcloud_valid);
+
+    // Calculate risk from validated points
+    BasicAnalyzer an;
+    an.Analyze(pointcloud_valid);
 
     points_pub.publish(pointcloud_valid);
 }
