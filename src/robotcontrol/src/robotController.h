@@ -8,6 +8,7 @@
 #include <ds4_driver/Status.h>
 #include <ds4_driver/Feedback.h>
 #include <mavros_msgs/State.h>
+#include <string>
 
 class State;
 
@@ -26,7 +27,7 @@ public:
     void onPX4State(const mavros_msgs::State::ConstPtr& msg);
     void switchState(State* nextState);
     bool setCommandToPX4(uint16_t cmdint);
-    bool setPX4Mode(char* mode);
+    bool setPX4Mode(std::string mode);
     void setLedColor(float r, float g, float b, bool blink);
 };
 
