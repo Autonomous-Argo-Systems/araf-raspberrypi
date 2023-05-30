@@ -36,8 +36,12 @@ void AutonomousControlState::onControllerData(const ds4_driver::Status &msg, Rob
 
 void AutonomousControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
 {
+    geometry_msgs::Twist twist;
+    twist.linear.x = msg->linear.x * speedFactor;
+    twist.linear.y = msg->linear.y * speedFactor;
+
     if (!directStopActive)
-        controller->drive_publisher.publish(msg);
+        controller->drive_publisher.publish(twist);
 }
 
 void AutonomousControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg, RobotController *controller)
@@ -57,8 +61,20 @@ void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotCont
     {
         directStopActive = true;
         controller->drive_publisher.publish(stopTwistMsg);
+
+        return;
     } else
     {
         directStopActive = false;
+    }
+
+    if (msg.data > slowThreshold)
+    {
+        float overSpeedFactor = (msg.data - slowThreshold) / (directStopTreshold - slowThreshold);
+        float speedPercentage = ((1.0f - msg.data) * (100.0f - slowThreshold)) + slowThreshold;
+        speedFactor = speedFactor / 100.0f;
+    } else
+    {
+        speedFactor = 1.0f;
     }
 }

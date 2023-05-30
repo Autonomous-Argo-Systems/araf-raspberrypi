@@ -7,6 +7,7 @@ class AutonomousControlState : public State
 {
 private:
     bool directStopActive = false;
+    float speedFactor = 1.0f;
     geometry_msgs::Twist stopTwistMsg;
 
     const float directStopTreshold = 90.0f;
