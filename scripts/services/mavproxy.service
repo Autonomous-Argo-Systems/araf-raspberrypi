@@ -1,0 +1,15 @@
+[Unit]
+Description=mavproxy
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /home/araf/startMavProxy.sh
+Restart=on-failure
+User=root
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target
+
+# Location: /etc/systemd/system/mavproxy.service

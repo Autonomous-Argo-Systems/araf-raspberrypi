@@ -4,6 +4,7 @@
 #include "states/states.h"
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/CommandLong.h>
+#include <string>
 
 ros::ServiceClient setmode_ser;
 ros::ServiceClient cmd_ser;
@@ -72,9 +73,9 @@ bool RobotController::setCommandToPX4(uint16_t cmdint)
 /**
  * setNewMode attempts to set the new mode in ardurover (ardupilot)
  **/
-bool RobotController::setPX4Mode(char* mode) {
+bool RobotController::setPX4Mode(std::string mode) {
     mavros_msgs::SetMode newMode;
-    newMode.request.custom_mode = mode;
+    newMode.request.custom_mode = mode.c_str();
     if (setmode_ser.call(newMode)) {
         return newMode.response.mode_sent;
     }
