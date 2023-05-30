@@ -55,6 +55,8 @@ void AutonomousControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg,
     }
 }
 
+bool isSlowing = false;
+
 void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotController* controller)
 {
     if (msg.data >= directStopTreshold)
@@ -67,20 +69,21 @@ void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotCont
         return;
     } else
     {
-        controller->setLedColor(255, 50, 100, false);
+        if (directStopActive) controller->setLedColor(255, 50, 100, false);
         directStopActive = false;
     }
 
     if (msg.data > slowThreshold)
     {
+        isSlowing = true;
         float overSpeedFactor = (msg.data - slowThreshold) / (directStopTreshold - slowThreshold);
         float speedPercentage = ((1.0f - msg.data) * (100.0f - slowThreshold)) + slowThreshold;
         speedFactor = speedFactor / 100.0f;
 
-        controller->setLedColor(255, 50, speedFactor * 100.0f, false);
+        controller->setLedColor(255, 50, 50, false);
     } else
     {
-        controller->setLedColor(255, 50, 100, false);
+        if(isSlowing) controller->setLedColor(255, 50, 100, false);
         speedFactor = 1.0f;
     }
 }

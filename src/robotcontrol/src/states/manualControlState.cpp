@@ -61,20 +61,30 @@ void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, Robo
     // DO NOTHING
 }
 
+bool errorActivated = false;
+
 void ManualControlState::onLidarRisk(const std_msgs::Float32& msg, RobotController* controller)
 {
     if (msg.data > directStopTreshold)
     {
-        auto msg = ds4_driver::Feedback();
-        msg.set_led = true;
-        msg.led_r = 255;
-        msg.led_g = 0;
-        msg.led_b = 0;
-        msg.set_rumble = true;
+        if (!errorActivated)
+        {
+            auto msg = ds4_driver::Feedback();
+            msg.set_led = true;
+            msg.led_r = 255;
+            msg.led_g = 0;
+            msg.led_b = 0;
+            msg.set_rumble = true;
+            msg.rumble_big = 1.0;
+            msg.rumble_duration = 5.0;
 
-        controller->ds4_publisher.publish(msg);
+            controller->ds4_publisher.publish(msg);
+        }
+
+        errorActivated = true;
     } else {
-        controller->setLedColor(0, 0, 255, false);
+        if (errorActivated) controller->setLedColor(0, 0, 255, false);
+        errorActivated = false;
     }
 }
 
