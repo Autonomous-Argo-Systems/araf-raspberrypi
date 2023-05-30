@@ -63,7 +63,19 @@ void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, Robo
 
 void ManualControlState::onLidarRisk(const std_msgs::Float32& msg, RobotController* controller)
 {
-    // DO NOTHING
+    if (msg.data > directStopTreshold)
+    {
+        auto msg = ds4_driver::Feedback();
+        msg.set_led = true;
+        msg.led_r = 255;
+        msg.led_g = 0;
+        msg.led_b = 0;
+        msg.set_rumble = true;
+
+        controller->ds4_publisher.publish(msg);
+    } else {
+        controller->setLedColor(0, 0, 255, false);
+    }
 }
 
 

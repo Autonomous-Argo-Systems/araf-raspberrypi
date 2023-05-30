@@ -5,6 +5,8 @@
 
 class ManualControlState : public State
 {
+    const float directStopTreshold = 90.0f;
+
 public:
     void onEnter(RobotController* controller);
     void onExit(RobotController* controller);
