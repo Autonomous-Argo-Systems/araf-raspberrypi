@@ -71,3 +71,20 @@ This service runs the `startMavProxy.sh` script on startup.
 
 #### *Possible issues*
 When Mission planner is connected to mavproxy and connection is lost, to reconnect mavproxy might need to be restarted.
+
+## Debugging
+Debugging can be done by viewing to logs with:
+```bash
+journalctl -u araf --no-pager
+```
+And
+```bash
+journalctl -u mavproxy --no-pager
+```
+
+Further debugging can be done by launching `ROS` manually.
+
+Debugging of individual ros topics can be done by logging them with
+```bash
+rostopic echo name_of_topic
+```
