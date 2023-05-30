@@ -62,9 +62,12 @@ void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotCont
         directStopActive = true;
         controller->drive_publisher.publish(stopTwistMsg);
 
+        controller->setLedColor(255, 0, 0, false);
+
         return;
     } else
     {
+        controller->setLedColor(255, 50, 100, false);
         directStopActive = false;
     }
 
@@ -73,8 +76,11 @@ void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotCont
         float overSpeedFactor = (msg.data - slowThreshold) / (directStopTreshold - slowThreshold);
         float speedPercentage = ((1.0f - msg.data) * (100.0f - slowThreshold)) + slowThreshold;
         speedFactor = speedFactor / 100.0f;
+
+        controller->setLedColor(255, 50, speedFactor * 100.0f, false);
     } else
     {
+        controller->setLedColor(255, 50, 100, false);
         speedFactor = 1.0f;
     }
 }
