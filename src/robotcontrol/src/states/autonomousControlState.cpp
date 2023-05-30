@@ -46,3 +46,8 @@ void AutonomousControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg,
         }
     }
 }
+
+void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotController* controller)
+{
+    
+}

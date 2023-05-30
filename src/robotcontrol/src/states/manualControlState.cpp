@@ -63,6 +63,12 @@ void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, Robo
     // DO NOTHING
 }
 
+void ManualControlState::onLidarRisk(const std_msgs::Float32& msg, RobotController* controller)
+{
+    // DO NOTHING
+}
+
+
 void ManualControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg, RobotController *controller)
 {
     if (msg->mode != "MANUAL") {

@@ -25,6 +25,11 @@ void RobotController::onPX4State(const mavros_msgs::State::ConstPtr& msg)
     currentState->onPX4State(msg, this);
 }
 
+void RobotController::onLidarRisk(const std_msgs::Float32& msg)
+{
+    currentState->onLidarRisk(msg, this);
+}
+
 void RobotController::init(ros::NodeHandle node_handler)
 {
     ROS_INFO("Init RoboController called");
@@ -37,6 +42,7 @@ void RobotController::init(ros::NodeHandle node_handler)
 
     ROS_INFO("Finished RobotController init");
 }
+
 
 void RobotController::handle()
 {
