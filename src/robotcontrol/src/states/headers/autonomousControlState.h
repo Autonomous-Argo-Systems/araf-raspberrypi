@@ -5,6 +5,18 @@
 
 class AutonomousControlState : public State
 {
+private:
+    bool directStopActive = false;
+    geometry_msgs::Twist stopTwistMsg;
+
+    const float directStopTreshold = 90.0f;
+    const float slowThreshold = 60.0f;
+
+    /**
+     * Percentage of max speed that is applied at < directstop
+     * max speed wil decrease from 100 linear to slowMaxSpeed
+    */
+    const float slowMaxSpeedThreshold = 40.0f;
 public:
     void onEnter(RobotController* controller);
     void onExit(RobotController* controller);

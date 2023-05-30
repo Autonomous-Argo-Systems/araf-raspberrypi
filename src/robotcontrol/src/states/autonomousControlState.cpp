@@ -16,6 +16,9 @@ void AutonomousControlState::onEnter(RobotController *controller)
         ROS_INFO("Failed sending px4state to auto");
     }
     controller->setLedColor(255, 50, 100, false);
+
+    stopTwistMsg.linear.x = 0;
+    stopTwistMsg.linear.y = 0;
 }
 
 void AutonomousControlState::onExit(RobotController *controller) {}
@@ -33,7 +36,8 @@ void AutonomousControlState::onControllerData(const ds4_driver::Status &msg, Rob
 
 void AutonomousControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
 {
-    controller->drive_publisher.publish(msg);
+    if (!directStopActive)
+        controller->drive_publisher.publish(msg);
 }
 
 void AutonomousControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg, RobotController *controller)
@@ -49,5 +53,12 @@ void AutonomousControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg,
 
 void AutonomousControlState::onLidarRisk(const std_msgs::Float32& msg, RobotController* controller)
 {
-    
+    if (msg.data >= directStopTreshold)
+    {
+        directStopActive = true;
+        controller->drive_publisher.publish(stopTwistMsg);
+    } else
+    {
+        directStopActive = false;
+    }
 }
