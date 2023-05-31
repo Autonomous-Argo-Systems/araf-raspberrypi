@@ -50,10 +50,10 @@ rsync ./scripts/services/ araf@araf.local:/etc/systemd/system/ --chown=root:root
 Then reload the daemon and enable/start the services.
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable araf 
 sudo systemctl enable mavproxy 
-sudo systemctl start araf 
+sudo systemctl enable araf 
 sudo systemctl start mavproxy 
+sudo systemctl start araf 
 ```
 
 ### ARAF service
