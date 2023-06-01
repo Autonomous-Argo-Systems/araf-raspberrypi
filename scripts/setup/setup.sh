@@ -5,6 +5,7 @@ echo "Setting up enviroment..."
 sudo apt update
 sudo apt install python3 -y
 sudo apt install python3-pip -y
+sudo apt install libserial-dev -y
 pip install ds4drv
 pip install pynmea2
 
