@@ -132,16 +132,11 @@ include_directories(
 # add_dependencies(${PROJECT_NAME} ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 add_library(nmea_lib SHARED
-  lib/context.c
-  lib/generate.c
-  lib/generator.c
-  lib/gmath.c
-  lib/info.c
-  lib/parse.c
-  lib/parser.c
-  lib/sentence.c
-  lib/time.c
-  lib/tok.c
+  lib/GPSFix.cpp
+  lib/GPSService.cpp
+  lib/NMEACommand.cpp
+  lib/NMEAParser.cpp
+  lib/NumberConversion.cpp
 )
 
 set(INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/include)
