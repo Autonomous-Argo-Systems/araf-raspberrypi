@@ -1,6 +1,4 @@
 #include "headers/boxValidator.h"
-#include <ros/ros.h>
-
 
 // Default settings for the bounding box, value's in m
 float leftOffset = 0.5f;
