@@ -47,6 +47,8 @@ copy services from ./scripts/services/ to /etc/systemd/system/
 rsync ./scripts/services/ araf@araf.local:/etc/systemd/system/ --chown=root:root --progress
 ```
 
+And copy start scripts from ./scripts/start/ to /home/araf/
+
 Then reload the daemon and enable/start the services.
 ```bash
 sudo systemctl daemon-reload
