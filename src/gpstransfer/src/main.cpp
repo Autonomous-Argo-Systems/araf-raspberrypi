@@ -40,6 +40,15 @@ void readZigbee()
         }
     }
 
+    // Setting correct settings
+    serialPortZigee.SetBaudRate(BaudRate::BAUD_115200);
+    serialPortZigee.SetCharacterSize(CharacterSize::CHAR_SIZE_8);
+    serialPortZigee.SetFlowControl(FlowControl::FLOW_CONTROL_NONE);
+    serialPortZigee.SetParity(Parity::PARITY_NONE);
+    serialPortZigee.SetStopBits(StopBits::STOP_BITS_1);
+
+    // Start reading
+
     while (ros::ok())
     {
         if (serialPortUblox.GetNumberOfBytesAvailable() == 0)
@@ -72,7 +81,7 @@ void readUblox()
         }
     }
 
-     // Setting correct settings
+    // Setting correct settings
     serialPortUblox.SetBaudRate(BaudRate::BAUD_115200);
     serialPortUblox.SetCharacterSize(CharacterSize::CHAR_SIZE_8);
     serialPortUblox.SetFlowControl(FlowControl::FLOW_CONTROL_NONE);
