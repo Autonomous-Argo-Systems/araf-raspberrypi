@@ -15,19 +15,74 @@
 using namespace LibSerial;
 
 constexpr const char *const SERIAL_PORT_UBLOX = "/dev/ttyACM0";
-SerialPort serialPort;
+constexpr const char *const SERIA_PORT_ZIGBEE = "/dev/ttyACM1";
+
+SerialPort serialPortUblox;
+SerialPort serialPortZigee;
 
 nmea::NMEAParser parser;
 nmea::GPSService gps(parser);
 
 mavros_msgs::HilGPS gpsMessage;
 
-void readUBLOX()
+void readZigbee()
 {
+    while (!serialPortZigee.IsOpen())
+    {
+        try
+        {
+            serialPortZigee.Open(SERIA_PORT_ZIGBEE);
+        }
+        catch (const OpenFailed &)
+        {
+            ROS_WARN("Zigbee serial port not opend correctly");
+            sleep(5);
+        }
+    }
 
     while (ros::ok())
     {
-        if (serialPort.GetNumberOfBytesAvailable() == 0)
+        if (serialPortUblox.GetNumberOfBytesAvailable() == 0)
+        {
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            continue;
+        }
+
+        // Reading sentence
+        //serialPort.ReadLine(nmeaSentence, '\n');
+
+        
+        
+    }
+}
+
+void readUblox()
+{
+    // Opening serial port
+    while (!serialPortUblox.IsOpen())
+    {
+        try
+        {
+            serialPortUblox.Open(SERIAL_PORT_UBLOX);
+        }
+        catch (const OpenFailed &)
+        {
+            ROS_ERROR("The serial ports did not open correctly.");
+            sleep(1);
+        }
+    }
+
+     // Setting correct settings
+    serialPortUblox.SetBaudRate(BaudRate::BAUD_115200);
+    serialPortUblox.SetCharacterSize(CharacterSize::CHAR_SIZE_8);
+    serialPortUblox.SetFlowControl(FlowControl::FLOW_CONTROL_NONE);
+    serialPortUblox.SetParity(Parity::PARITY_NONE);
+    serialPortUblox.SetStopBits(StopBits::STOP_BITS_1);
+
+    // Start reading
+    while (ros::ok())
+    {
+        if (serialPortUblox.GetNumberOfBytesAvailable() == 0)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(10));
             continue;
@@ -35,7 +90,7 @@ void readUBLOX()
 
         // Reading sentence
         std::string nmeaSentence;
-        serialPort.ReadLine(nmeaSentence, '\n', 10);
+        serialPortUblox.ReadLine(nmeaSentence, '\n');
 
         // Parsing sentence
         try
@@ -62,26 +117,8 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "gpstransfer");
     ros::NodeHandle nh;
 
-    // Opening serial ports
-    try
-    {
-        serialPort.Open(SERIAL_PORT_UBLOX);
-    }
-    catch (const OpenFailed &)
-    {
-        ROS_ERROR("The serial ports did not open correctly.");
-        return EXIT_FAILURE;
-    }
-
-    // Setting correct settings
-    serialPort.SetBaudRate(BaudRate::BAUD_115200);
-    serialPort.SetCharacterSize(CharacterSize::CHAR_SIZE_8);
-    serialPort.SetFlowControl(FlowControl::FLOW_CONTROL_NONE);
-    serialPort.SetParity(Parity::PARITY_NONE);
-    serialPort.SetStopBits(StopBits::STOP_BITS_1);
-
     // Starting reading ublox
-    std::thread ubloxThread(readUBLOX);
+    std::thread ubloxThread(readUblox);
 
     // Starting publiser
     ros::Publisher gpsPublisher = nh.advertise<mavros_msgs::HilGPS>("/mavros/hil/gps", 1000);
@@ -94,12 +131,12 @@ int main(int argc, char **argv)
         gpsMessage.geo.latitude = gps.fix.latitude;
         gpsMessage.geo.longitude = gps.fix.longitude;
         gpsMessage.geo.altitude = gps.fix.altitude;
-        gpsMessage.eph = gps.fix.horizontalDilution * 100;
-        gpsMessage.epv = gps.fix.verticalDilution * 100;
+        gpsMessage.eph = 0;
+        gpsMessage.epv = 0;
         gpsMessage.cog = gps.fix.travelAngle;
         gpsMessage.fix_type = gps.fix.type;
-        gpsMessage.vel = (gps.fix.speed / 3.6f) * 100;
-        gpsMessage.satellites_visible = gps.fix.visibleSatellites;
+        gpsMessage.vel = (gps.fix.speed / 3.6f);
+        gpsMessage.satellites_visible = gps.fix.trackingSatellites;
 
         // Printing debug
         ROS_INFO("%s", gps.fix.toString().c_str());
@@ -111,7 +148,7 @@ int main(int argc, char **argv)
     }
 
     // Closing ports
-    serialPort.Close();
+    serialPortUblox.Close();
 
     return 0;
 }
