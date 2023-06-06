@@ -7,6 +7,7 @@
 
 	<node pkg="ds4_driver" type="ds4_driver_node.py" name="ds4_driver" />
 	<node pkg="robotcontrol" type="robotcontrol_node" name="robotcontrol"/>
+	<node pkg="gpstransfer" type="gpstransfer_node" name="gpstransfer"/>
 	<node name="Drive" pkg="rosserial_python" type="serial_node.py">
 		<param name="port" type="string" value="/dev/ttyUSB0"/>
 		<param name="baud" type="int" value="57600"/>
@@ -17,7 +18,4 @@
 	<include file="$(find mavros)/launch/px4.launch">
 		<arg name="fcu_url" default="tcp://127.0.0.1:5679" />
 	</include>
-
-	<node pkg="gpstransfer" type="gpstransfer.py" name="gpstransfer" />
-
 </launch>
