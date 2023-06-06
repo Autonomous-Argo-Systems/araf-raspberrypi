@@ -8,7 +8,7 @@
 const int zeroSpeedRepeat = 3;
 
 int previous_right, previous_left;
-int zero_repeated_right = 0, zero_repeated_left = 0;
+int zero_repeated_right =0, zero_repeated_left = 0;
 int last_controller_time;
 
 void ManualControlState::update(RobotController* controller)

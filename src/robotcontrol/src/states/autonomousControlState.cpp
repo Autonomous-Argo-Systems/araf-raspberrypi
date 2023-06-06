@@ -3,7 +3,6 @@
 #include <mavros_msgs/SetMode.h>
 
 #include "states.h"
-#include "headers/autonomousControlState.h"
 
 void AutonomousControlState::update(RobotController *controller) {}
 
@@ -36,12 +35,20 @@ void AutonomousControlState::onControllerData(const ds4_driver::Status &msg, Rob
 
 void AutonomousControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
 {
+    if (directStopActive) return;
+
     geometry_msgs::Twist twist;
     twist.linear.x = msg->linear.x * speedFactor;
     twist.linear.y = msg->linear.y * speedFactor;
 
-    if (!directStopActive)
+    if (twist.linear.x != AutonomousControlState::previous_left || twist.linear.y != AutonomousControlState::previous_right)
+    {
         controller->drive_publisher.publish(twist);
+
+        AutonomousControlState::previous_left = twist.linear.x;
+        AutonomousControlState::previous_right = twist.linear.y; 
+    }
+        
 }
 
 void AutonomousControlState::onPX4State(const mavros_msgs::State::ConstPtr &msg, RobotController *controller)
