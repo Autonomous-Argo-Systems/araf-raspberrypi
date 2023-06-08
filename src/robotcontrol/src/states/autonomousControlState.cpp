@@ -45,9 +45,9 @@ void AutonomousControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, 
     {
         controller->drive_publisher.publish(twist);
 
-        AutonomousControlState::previous_left = twist.linear.x;
-        AutonomousControlState::previous_right = twist.linear.y; 
     }
+    AutonomousControlState::previous_left = twist.linear.x;
+    AutonomousControlState::previous_right = twist.linear.y; 
         
 }
 
