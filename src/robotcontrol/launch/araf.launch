@@ -13,7 +13,10 @@
 		<param name="baud" type="int" value="57600"/>
 	</node>
 	<node pkg="mavmapper" type="mavmapper_node" name="mavmapper"/>
-	<node pkg="lidarcontrol" type="lidarcontrol_node" name="lidarcontrol"/>
+	<node pkg="lidarcontrol" type="lidarcontrol_node" name="lidarcontrol">
+		<param name="lidarcontrol/validator_config" type="string" value="0.5 0.5 4.0 1.0 3.0 0.0"/>
+		<param name="lidarcontrol/analyzer_config" type="string" value="2.25 1.0 1.0 3.5 1.0 1.0 0.0 2.0"/>
+	</node>
 	<include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
 	<include file="$(find mavros)/launch/px4.launch">
 		<arg name="fcu_url" default="tcp://127.0.0.1:5679" />
