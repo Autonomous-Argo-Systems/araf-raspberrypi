@@ -13,6 +13,8 @@ private:
     const float directStopTreshold = 90.0f;
     const float slowThreshold = 60.0f;
 
+    double previous_right = 0.0, previous_left = 0.0;
+
     /**
      * Percentage of max speed that is applied at < directstop
      * max speed wil decrease from 100 linear to slowMaxSpeed

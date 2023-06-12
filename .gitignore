@@ -23,7 +23,6 @@ devel/
 logs/
 build/
 bin/
-lib/
 msg_gen/
 srv_gen/
 msg/*Action.msg
@@ -90,5 +89,7 @@ CATKIN_IGNORE
 .history
 .ionide
 
-# End of https://www.toptal.com/developers/gitignore/api/cmake,ros,visualstudiocode
+# Exceptions
+!/src/gpstransfer/lib
 
+# End of https://www.toptal.com/developers/gitignore/api/cmake,ros,visualstudiocode

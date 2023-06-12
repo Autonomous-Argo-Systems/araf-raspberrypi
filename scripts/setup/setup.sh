@@ -5,6 +5,7 @@ echo "Setting up enviroment..."
 sudo apt update
 sudo apt install python3 -y
 sudo apt install python3-pip -y
+sudo apt install libserial-dev -y
 pip install ds4drv
 pip install pynmea2
 
@@ -29,7 +30,7 @@ echo 'source '$PWD'/devel/setup.bash'>> ~/.bashrc
 # downloading Lidar (Velodyne) driver
 cd src
 git clone "https://github.com/ros-drivers/velodyne.git"
-cd ..
+cd ../..
 rosdep install --from-paths src --ignore-src --rosdistro noetic -y
 
 # downloading DS4 (PS4 controller) driver 

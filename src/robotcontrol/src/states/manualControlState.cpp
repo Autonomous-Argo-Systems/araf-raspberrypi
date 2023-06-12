@@ -5,7 +5,10 @@
 #include "states.h"
 #include "headers/manualControlState.h"
 
+const int zeroSpeedRepeat = 3;
+
 int previous_right, previous_left;
+int zero_repeated_right =0, zero_repeated_left = 0;
 int last_controller_time;
 
 void ManualControlState::update(RobotController* controller)
@@ -41,20 +44,38 @@ void ManualControlState::onControllerData(const ds4_driver::Status& msg, RobotCo
         ROS_INFO("Switching to auto mode");
         controller->switchState(autonomousControlState);
     }
-
+    
     int input_left = (int)(msg.axis_left_y * 100.0);
     int input_right = (int)(msg.axis_right_y * 100.0);
 
-    ROS_INFO("Set drive forward: %d, rotate: %d", input_left, previous_right);
-    auto outmsg = geometry_msgs::Twist();
-    outmsg.linear.x = ((double)input_left / 100.0);
-    outmsg.linear.y = ((double)input_right / 100.0);
-    controller->drive_publisher.publish(outmsg);
+    bool rightChangedOrZero = input_right != previous_right;
+    if (input_right == 0 && zero_repeated_right < zeroSpeedRepeat)
+    {
+        zero_repeated_right++;
+        rightChangedOrZero = true;
+    } else if (input_right != 0) zero_repeated_right = 0;
 
-    previous_right = input_right;
-    previous_left = input_left;
+    bool leftChangedOrZero = input_left != previous_left;
+    if (input_left == 0 && zero_repeated_left < zeroSpeedRepeat)
+    {
+        zero_repeated_left++;
+        leftChangedOrZero = true;
+    } else if (input_left != 0) zero_repeated_left = 0;
+
+    if (rightChangedOrZero || leftChangedOrZero)
+    {
+        ROS_INFO("Set drive forward: %d, rotate: %d", input_left, previous_right);
+        auto outmsg = geometry_msgs::Twist();
+        outmsg.linear.x = ((double)input_left / 100.0);
+        outmsg.linear.y = ((double)input_right / 100.0);
+        controller->drive_publisher.publish(outmsg);
+
+        previous_right = input_right;
+        previous_left = input_left;
+    }
     
 }
+
 
 void ManualControlState::onRCOut(const geometry_msgs::Twist::ConstPtr &msg, RobotController *controller)
 {
