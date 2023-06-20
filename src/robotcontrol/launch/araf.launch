@@ -12,7 +12,7 @@
 		<param name="gpstransfer/zigbee_port" type="string" value="/dev/zigbee_device"/>
 	</node>
 	<node name="Drive" pkg="rosserial_python" type="serial_node.py">
-		<param name="port" type="string" value="/dev/HL340"/>
+		<param name="port" type="string" value="/dev/HL340_device"/>
 		<param name="baud" type="int" value="57600"/>
 	</node>
 	<node pkg="mavmapper" type="mavmapper_node" name="mavmapper"/>
