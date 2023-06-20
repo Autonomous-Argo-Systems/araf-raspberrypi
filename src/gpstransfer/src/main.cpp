@@ -68,7 +68,7 @@ void readZigbee()
 
         ROS_INFO("Read and send bytes from zigbee to Ublox");
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
@@ -102,7 +102,7 @@ void readUblox()
             ROS_INFO("Error in parsing sentence %s\n%s", e.message.c_str(), e.nmea.text.c_str());
         }
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
     }
 }
 
