@@ -51,8 +51,6 @@ void BoxValidator::Validate(const sensor_msgs::PointCloud2 &pointcloud, sensor_m
 
 void BoxValidator::Configure(std::vector<float> configuration)
 {
-    if (configuration.size() != 6) throw std::runtime_error("BoxValidator configuration size was not 6");
-
     leftOffset = configuration.at(0);
     rightOffset = configuration.at(1);
     topOffset = configuration.at(2);
