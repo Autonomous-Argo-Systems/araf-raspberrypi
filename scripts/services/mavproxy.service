@@ -8,6 +8,10 @@ ExecStart=/bin/bash /home/araf/startMavProxy.sh
 Restart=on-failure
 User=root
 RestartSec=2s
+CPUWeight=20
+CPUQuota=50%
+IOWeight=20
+MemorySwapMax=0
 
 [Install]
 WantedBy=multi-user.target
