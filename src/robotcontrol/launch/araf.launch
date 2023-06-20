@@ -7,7 +7,10 @@
 
 	<node pkg="ds4_driver" type="ds4_driver_node.py" name="ds4_driver" />
 	<node pkg="robotcontrol" type="robotcontrol_node" name="robotcontrol"/>
-	<node pkg="gpstransfer" type="gpstransfer_node" name="gpstransfer"/>
+	<node pkg="gpstransfer" type="gpstransfer_node" name="gpstransfer">
+		<param name="gpstransfer/ublox_port" type="string" value="/dev/ttyACM0"/>
+		<param name="gpstransfer/zigbee_port" type="string" value="/dev/ttyUSB1"/>
+	</node>
 	<node name="Drive" pkg="rosserial_python" type="serial_node.py">
 		<param name="port" type="string" value="/dev/ttyUSB0"/>
 		<param name="baud" type="int" value="57600"/>

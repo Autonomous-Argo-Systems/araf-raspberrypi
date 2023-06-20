@@ -17,8 +17,7 @@ using namespace LibSerial;
 
 std::mutex ubloxPortMutex;
 
-constexpr const char *const SERIAL_PORT_UBLOX = "/dev/ttyACM0";
-constexpr const char *const SERIA_PORT_ZIGBEE = "/dev/ttyUSB1";
+std::string serialPortUbloxId, serialPortZigbeeId;
 
 SerialPort serialPortUblox;
 SerialPort serialPortZigee;
@@ -34,7 +33,7 @@ void readZigbee()
     {
         try
         {
-            serialPortZigee.Open(SERIA_PORT_ZIGBEE);
+            serialPortZigee.Open(serialPortZigbeeId);
         }
         catch (const OpenFailed &)
         {
@@ -111,12 +110,15 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "gpstransfer");
     ros::NodeHandle nh;
 
+    ros::param::get("~gpstransfer/ublox_port", serialPortUbloxId);
+    ros::param::get("~gpstransfer/zigbee_port", serialPortZigbeeId);  
+
     // Opening serial port
     while (!serialPortUblox.IsOpen())
     {
         try
         {
-            serialPortUblox.Open(SERIAL_PORT_UBLOX);
+            serialPortUblox.Open(serialPortUbloxId);
         }
         catch (const OpenFailed &)
         {
