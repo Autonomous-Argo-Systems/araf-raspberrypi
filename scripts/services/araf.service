@@ -1,6 +1,6 @@
 [Unit]
 Description=araf
-After=network.target
+After=network.target mavproxy.service getty.target
 
 [Service]
 Type=simple

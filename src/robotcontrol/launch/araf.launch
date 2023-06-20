@@ -12,13 +12,13 @@
 		<param name="gpstransfer/zigbee_port" type="string" value="/dev/zigbee_device"/>
 	</node>
 	<node name="Drive" pkg="rosserial_python" type="serial_node.py">
-		<param name="port" type="string" value="/dev/HL340_device"/>
+		<param name="port" type="string" value="/dev/HL340"/>
 		<param name="baud" type="int" value="57600"/>
 	</node>
 	<node pkg="mavmapper" type="mavmapper_node" name="mavmapper"/>
 	<node pkg="lidarcontrol" type="lidarcontrol_node" name="lidarcontrol">
-		<param name="lidarcontrol/validator_config" type="string" value="1.2 0.25 2.5 0.2 3.0 0.0"/>
-		<param name="lidarcontrol/analyzer_config" type="string" value="2.25 1.0 1.0 3.5 1.0 1.0 0.0 2.0"/>
+		<param name="lidarcontrol/validator_config" type="string" value="0.8 0.25 1.5 0.2 3.0 -0.1"/>
+		<param name="lidarcontrol/analyzer_config" type="string" value="2.25 1.0 1.0 3.3 1.0 1.0 0.0 2.0"/>
 	</node>
 	<include file="$(find velodyne_pointcloud)/launch/VLP16_points.launch"/>
 	<include file="$(find mavros)/launch/px4.launch">
